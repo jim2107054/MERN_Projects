@@ -10,6 +10,11 @@ const Navbar = () => {
   // if we have the token, that means we are logged in
   const [token, setToken] = useState(true);
 
+  const handleLogout = () => {
+    setToken(false);
+
+  }
+
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
       <img className="w-44 cursor-pointer" src={assets.admin_logo} alt="logo" />
@@ -39,9 +44,9 @@ const Navbar = () => {
             <img className="w-2.5" src={dropdownIcon} alt="" />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="min-w-48 bg-stone-300 rounded flex flex-col gap-2 p-4">
-                <p className="hover:text-black cursor-pointer">My Profile</p>
-                <p className="hover:text-black cursor-pointer">My Appointment</p>
-                <p className="hover:text-black cursor-pointer">Logout</p>
+                <p onClick={()=> navigate('/my-profile')} className="hover:text-black cursor-pointer">My Profile</p>
+                <p onClick={()=> navigate('/my-appointments')} className="hover:text-black cursor-pointer">My Appointment</p>
+                <p onClick={()=>handleLogout()} className="hover:text-black cursor-pointer">Logout</p>
               </div>
             </div>
           </div>
