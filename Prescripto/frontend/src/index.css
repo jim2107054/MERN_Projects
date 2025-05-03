@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Navbar-li{
+    @apply py-1
+}
+
+.Navbar-li-hr{
+    @apply border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden
+}
