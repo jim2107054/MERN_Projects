@@ -9,3 +9,7 @@
 .Navbar-li-hr{
     @apply border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden
 }
+
+.active hr{
+    @apply block
+}
