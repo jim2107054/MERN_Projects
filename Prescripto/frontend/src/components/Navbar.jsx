@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setToken(false);
-
+    navigate('/')
   }
 
   return (
