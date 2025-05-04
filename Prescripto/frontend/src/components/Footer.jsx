@@ -16,9 +16,9 @@ const Footer = () => {
         <div className="">
             <p className="text-xl font-medium mb-5">Company</p>
             <ul className="flex flex-col gap-2 text-gray-800 font-semibold">
-                <li onClick={()=>navigate('/')}>Home</li>
-                <li onClick={()=>navigate('/about')}>About us</li>
-                <li onClick={()=>navigate('/contact')}>Contact us</li>
+                <li className="cursor-pointer" onClick={()=>navigate('/')}>Home</li>
+                <li className="cursor-pointer" onClick={()=>navigate('/about')}>About us</li>
+                <li className="cursor-pointer" onClick={()=>navigate('/contact')}>Contact us</li>
                 <li>Privacy policy</li>
             </ul>
         </div>
