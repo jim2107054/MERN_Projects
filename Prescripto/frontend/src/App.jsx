@@ -9,6 +9,7 @@ import MyProfile from "./pages/MyProfile";
 import MyAppointments from "./pages/MyAppointments";
 import Appointment from "./pages/Appointment";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
         {/* Here user can book an new appointment */}
         <Route path="/appointment/:docId" element={<Appointment />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };
