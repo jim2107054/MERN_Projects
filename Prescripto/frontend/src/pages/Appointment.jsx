@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "./../context/AppContext";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import RelatedDoctors from "../components/RelatedDoctors";
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -164,7 +165,8 @@ const Appointment = () => {
           <button className="bg-primary px-4 py-2 my-10 rounded-lg
           hover:scale-105 text-white font-light transition-all duration-500 hover:bg-green-600">Book an Appointment</button>
         </div>
-        {/*--------- Appointment Slots -----------*/}
+        {/*--------- Related Doctors -----------*/}
+        <RelatedDoctors speciality={docInfo.speciality}/>
       </div>
     )
   );
