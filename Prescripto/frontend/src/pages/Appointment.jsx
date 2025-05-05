@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "./../context/AppContext";
 import { assets } from "../assets/assets";
-import { useNavigate } from "react-router-dom";
 import RelatedDoctors from "../components/RelatedDoctors";
 
 const Appointment = () => {
   const { docId } = useParams();
   const { doctors, currencySymbol } = useContext(AppContext);
 
-  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   const [docInfo, setDocInfo] = useState(null);
 
@@ -126,8 +125,6 @@ const Appointment = () => {
                 {docInfo.about}
               </p>
             </div>
-            {/* <p>{docInfo.about}</p>
-          <p>{docInfo.fees + "$"}</p> */}
             <p className="mt-4 text-gray-800 font-medium">
               Appointment fee:{" "}
               <span className="text-gray-950">
@@ -141,32 +138,51 @@ const Appointment = () => {
         <div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700">
           <p>Booking Slots</p>
           <div className="flex gap-4 mt-4 items-center w-full overflow-x-scroll ">
-            {
-              docSLots.length && docSLots.map((item,index)=>(
-                <div onClick={()=>setSlotIndex(index)} key={index} className={`text-center cursor-pointer gap-3 border border-blue-500 rounded-md  px-4 py-2 ${index === slotIndex?"bg-blue-200 text-gray-900":"bg-white"}`}>
+            {docSLots.length &&
+              docSLots.map((item, index) => (
+                <div
+                  onClick={() => setSlotIndex(index)}
+                  key={index}
+                  className={`text-center cursor-pointer gap-3 border border-blue-500 rounded-md  px-4 py-2 ${
+                    index === slotIndex
+                      ? "bg-blue-200 text-gray-900"
+                      : "bg-white"
+                  }`}
+                >
                   <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
                   <div className="flex">
-                  <p>{item[0] && item[0].datetime.getDate()}</p>
-                  <p>/{item[0] && item[0].datetime.getMonth()+1}</p>
-                  <p>/{item[0] && item[0].datetime.getFullYear()}</p>
+                    <p>{item[0] && item[0].datetime.getDate()}</p>
+                    <p>/{item[0] && item[0].datetime.getMonth() + 1}</p>
+                    <p>/{item[0] && item[0].datetime.getFullYear()}</p>
                   </div>
                 </div>
-              ))
-            }
+              ))}
           </div>
           <div className="flex gap-4 mt-4 items-center w-full overflow-x-scroll">
-            {
-              
-                docSLots.length && docSLots[slotIndex].map((item,index)=>(
-                  <p onClick={()=>setSlotTime(item.time)} key={index} className={`text-sm font-light flex-shrink-0 px-5 py-2 border border-blue-400 rounded-full cursor-pointer ${item.time===slotTime?"bg-blue-200 text-gray-900":"bg-white"}`}>{item.time.toLowerCase()}</p>
-                ))
-            }
+            {docSLots.length &&
+              docSLots[slotIndex].map((item, index) => (
+                <p
+                  onClick={() => setSlotTime(item.time)}
+                  key={index}
+                  className={`text-sm font-light flex-shrink-0 px-5 py-2 border border-blue-400 rounded-full cursor-pointer ${
+                    item.time === slotTime
+                      ? "bg-blue-200 text-gray-900"
+                      : "bg-white"
+                  }`}
+                >
+                  {item.time.toLowerCase()}
+                </p>
+              ))}
           </div>
-          <button className="bg-primary px-4 py-2 my-10 rounded-lg
-          hover:scale-105 text-white font-light transition-all duration-500 hover:bg-green-600">Book an Appointment</button>
+          <button
+            className="bg-primary px-4 py-2 my-10 rounded-lg
+          hover:scale-105 text-white font-light transition-all duration-500 hover:bg-green-600"
+          >
+            Book an Appointment
+          </button>
         </div>
         {/*--------- Related Doctors -----------*/}
-        <RelatedDoctors speciality={docInfo.speciality}/>
+        <RelatedDoctors speciality={docInfo.speciality} docId={docInfo._id} />
       </div>
     )
   );
