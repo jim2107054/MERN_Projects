@@ -159,9 +159,10 @@ const Appointment = () => {
                 docSLots.length && docSLots[slotIndex].map((item,index)=>(
                   <p onClick={()=>setSlotTime(item.time)} key={index} className={`text-sm font-light flex-shrink-0 px-5 py-2 border border-blue-400 rounded-full cursor-pointer ${item.time===slotTime?"bg-blue-200 text-gray-900":"bg-white"}`}>{item.time.toLowerCase()}</p>
                 ))
-              
             }
           </div>
+          <button className="bg-primary px-4 py-2 my-10 rounded-lg
+          hover:scale-105 text-white font-light transition-all duration-500 hover:bg-green-600">Book an Appointment</button>
         </div>
         {/*--------- Appointment Slots -----------*/}
       </div>
