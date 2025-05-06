@@ -53,7 +53,7 @@ const Navbar = () => {
         ) : (
           <button
             className="bg-primary hover:scale-105 transition-all duration-300 text-white px-8 py-3 rounded-lg font-light hidden md:block"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/signup")}
           >
             Create Account
           </button>

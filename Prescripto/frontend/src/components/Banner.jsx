@@ -12,7 +12,7 @@ const Banner = () => {
                 <p>Book Appointment</p>
                 <p className='mt-4'>With 100+ Trusted Doctors</p>
             </div>
-            <button onClick={()=>{navigate('/login'); scrollTo(0,0)}} className='bg-white text-base text-gray-800 px-8 py-3 rounded-xl mt-6 hover:scale-105 transition-all duration-500'>Create Account</button>
+            <button onClick={()=>{navigate('/signup'); scrollTo(0,0)}} className='bg-white text-base text-gray-800 px-8 py-3 rounded-xl mt-6 hover:scale-105 transition-all duration-500'>Create Account</button>
         </div>
         {/*--------Right Side---------*/}
         <div className="hidden md:block md:w-1/2 lg:w-[370px] relative">
