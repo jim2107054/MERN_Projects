@@ -8,6 +8,7 @@ const Doctors = () => {
 
   //Specialist doctors will be shown in the right side of the page
   const [filterDoc, setFilterDoc] = useState([]);
+  const [filter, setFilter] = useState(false)
   
   const {doctors} = useContext(AppContext);
 
@@ -40,7 +41,10 @@ const Doctors = () => {
     <div>
         <p className="text-gray-800 text-xl font-medium">Browse through the doctors specialist.</p>
         <div className="flex flex-col sm:flex-row items-start gap-5 mt-6">
-          <div className='flex flex-col gap-4 text-xl text-gray-900'>
+          <button onClick={()=>setFilter(!filter)} className={`w-fit mt-2 bg-primary px-7 py-2 rounded-xl text-white font-light hover:scale-105 transition-all duration-300 ${filter?"hidden":"visible"}`}>Filters</button>
+          {
+            filter && (
+            <div className='flex flex-col gap-4 text-xl text-gray-900'>
             <p onClick={handleGeneralPhysician} className={`SpecialistDoctors ${speciality==="General physician"?"bg-indigo-200 text-black":""}`}>General physician</p>
             <p onClick={handleGynecologist} className={`SpecialistDoctors ${speciality==="Gynecologist"?"bg-indigo-200 text-black":""}`}>Gynecologist</p>
             <p onClick={handleDermatologist} className={`SpecialistDoctors ${speciality==="Dermatologist"?"bg-indigo-200 text-black":""}`}>Dermatologist</p>
@@ -48,6 +52,8 @@ const Doctors = () => {
             <p onClick={handleNeurologist} className={`SpecialistDoctors ${speciality==="Neurologist"?"bg-indigo-200 text-black":""}`}>Neurologist</p>
             <p onClick={handleGastroenterologist} className={`SpecialistDoctors ${speciality==="Gastroenterologist"?"bg-indigo-200 text-black":""}`}>Gastroenterologist</p>
           </div>
+            )
+          }
           <div className="w-full p-2 grid grid-cols-auto gap-4 gap-y-6">
             {
               filterDoc.map((doctor,index)=>(

@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
       <img onClick={()=>navigate('/')} className="w-44 cursor-pointer" src={assets.logo} alt="logo" />
-      <ul className="hidden md:flex items-start gap-5 text-xl font-medium">
+      <ul className="hidden md:flex items-start gap-5 text-base lg:text-xl font-medium">
         <NavLink to="/">
           <li className="Navbar-li">Home</li>
           <hr className="Navbar-li-hr" />
@@ -58,6 +58,29 @@ const Navbar = () => {
             Create Account
           </button>
         )}
+
+        <img onClick={()=>setShowMenu(true)} className="w-7 md:hidden cursor-pointer" src={assets.menu_icon} alt="" />
+        {/*-------- Mobile Menu ----------*/}
+        <div className={` ${showMenu ? "fixed w-full":"h-0 w-0"} md:hidden right-0 top-0 bottom-0 bg-gray-700 z-20 overflow-hidden transition-all`} >
+          <div className="flex items-center justify-between px-5 py-4">
+            <img className="w-36" src={assets.logo} alt="" />
+            <img className="w-8 " onClick={()=>setShowMenu(false)} src={assets.cross_icon} alt="" />
+          </div>
+          <ul className="flex flex-col items-center gap-5 text-xl font-medium mt-5 text-white">
+            <NavLink onClick={()=> setShowMenu(false)} to="/">
+              <li className="Navbar-li">Home</li>
+            </NavLink>
+            <NavLink onClick={()=> setShowMenu(false)} to="/doctors">
+              <li className="Navbar-li">All Doctors</li>
+            </NavLink>
+            <NavLink onClick={()=> setShowMenu(false)} to="/about">
+              <li className="Navbar-li">About</li>
+            </NavLink>
+            <NavLink onClick={()=> setShowMenu(false)} to="/contact">
+              <li className="Navbar-li">Contact</li>
+            </NavLink>
+          </ul>
+        </div>
       </div>
     </div>
   );
