@@ -14,7 +14,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex flex-col justify-center gap-2 w-full lg:w-1/2 xl:w-2/5 border border-blue-300 shadow-md shadow-slate-200 bg-[#d4d4d479] p-5 rounded-lg mt-20">
+      <div className="flex flex-col justify-center gap-2 w-full lg:w-1/2 xl:w-2/5 border border-blue-100 shadow-2xl shadow-slate-300 bg-[#d4d4d479] p-5 rounded-lg mt-20">
         <p className="text-gray-800 text-xl font-semibold">Login</p>
         <p className="text-gray-700 font-light">
           Please login in to book an appointment
