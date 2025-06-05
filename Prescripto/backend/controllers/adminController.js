@@ -1,7 +1,6 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
 import { uploadImageOnCloudinary } from './../config/cloudinary.js';
-// import mongoose from "mongoose"; // Removed unused import
 import doctorModel from './../models/DoctorModel.js';
 
 //API for adding a new doctor
@@ -9,11 +8,18 @@ export const addDoctor = async (req, res) => {
   try {
     const {name,email,password,speciality,degree,experience,about,available,fees,address} = req.body;
     let doctorImage = req.file;
-    console.log({name,email,password,speciality,degree,experience,about,available,fees,address},doctorImage);
-      // res.status(200).json({message:"ok"});
+    //console log the received data for debugging
+    // console.log({name,email,password,speciality,degree,experience,about,available,fees,address},doctorImage);
+    // res.status(200).json({message:"ok"});
     //checking for all data to add a doctor
     if (!name ||!email ||!password ||!speciality ||!degree ||!experience ||!about ||!available ||!doctorImage ||!fees ||!address){
       return res.status(400).json({ message: "Please fill all fields" });
+    }
+
+    //checking if doctor already exists
+    const existingDoctor = await doctorModel.findOne({email});
+    if (existingDoctor) {
+      return res.status(400).json({ message: "Doctor already exists" });
     }
 
     //validating email
@@ -53,11 +59,11 @@ export const addDoctor = async (req, res) => {
         date: new Date(), // Added date field to fix validation error
     }
 
-    const Doctors = await doctorModel.create(doctorData);
-    if (!Doctors) {
+    const newDoctor = await doctorModel.create(doctorData);
+    if (!newDoctor) {
       return res.status(500).json({ message: "Failed to add doctor" });
     }
-    res.status(201).json({ message: "Doctor added successfully", doctor: Doctors });
+    res.status(201).json({ message: "Doctor added successfully", doctor: newDoctor });
 
   } catch (error) {
     console.error("Error adding doctor:", error);
