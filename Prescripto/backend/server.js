@@ -16,7 +16,7 @@ uploadImageOnCloudinary();
 
 //middleware
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 
 //api endpoints
 app.use("/api/admin",adminRouter)
