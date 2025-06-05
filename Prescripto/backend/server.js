@@ -2,12 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/mongoDB.js';
+import { uploadImageOnCloudinary } from './config/cloudinary.js';
 dotenv.config();
 
 
 //app config 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Importing the Cloudinary configuration
+uploadImageOnCloudinary();
 
 //middleware
 app.use(cors());
