@@ -63,10 +63,10 @@ export const addDoctor = async (req, res) => {
     if (!newDoctor) {
       return res.status(500).json({ message: "Failed to add doctor" });
     }
-    res.status(201).json({ message: "Doctor added successfully", doctor: newDoctor });
+    res.json({success:true, message: "Doctor added successfully", doctor: newDoctor });
 
   } catch (error) {
     console.error("Error adding doctor:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.json({success:false, message: "Internal server error" });
   }
 };
