@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import { uploadImageOnCloudinary } from './../config/cloudinary.js';
 import doctorModel from './../models/DoctorModel.js';
+import jwt from 'jsonwebtoken';
 
 //API for adding a new doctor
 export const addDoctor = async (req, res) => {
@@ -70,3 +71,20 @@ export const addDoctor = async (req, res) => {
     res.json({success:false, message: "Internal server error" });
   }
 };
+
+//API for the admin login
+export const adminLogin = async (req,res)=>{
+  try {
+    const {email,password}= req.body;
+   
+    if(email!==process.env.ADMIN_EMAIL || password!==process.env.ADMIN_PASSWORD){
+      return res.status(400).json({success:false, message: "Invalid email or password" });
+    }
+    let token = jwt.sign(email+password,process.env.JWT_SECRET);
+    res.json({success:true,token})
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({success:false, message:error.message });
+  }
+}
