@@ -120,14 +120,26 @@ export const adminLogin = async (req, res) => {
       email !== process.env.ADMIN_EMAIL ||
       password !== process.env.ADMIN_PASSWORD
     ) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid email or password" });
+      return res.json({ success: false, message: "Invalid email or password" });
     }
     let token = jwt.sign(email + password, process.env.JWT_SECRET);
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API for getting all doctors list for admin panel
+export const allDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({}).select("-password"); // we don't want to show password in the response
+    if (!doctors || doctors.length === 0) {
+      return res.json({ success: false, message: "No doctors found" });
+    }
+    res.json({ success: true, doctors });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
   }
 };
