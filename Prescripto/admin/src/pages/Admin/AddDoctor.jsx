@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const AddDoctor = () => {
   const [docImg, setDocImg] = useState(false);
@@ -11,7 +12,7 @@ const AddDoctor = () => {
   const [experience, setExperience] = useState("1 Year");
   const [fees, setFees] = useState("");
   const [speciality, setSpeciality] = useState("General physician");
-  const [education, setEducation] = useState("");
+  const [degree, setDegree] = useState("");
   const [address, setAddress] = useState("");
   const [about, setAbout] = useState("");
 
@@ -33,7 +34,7 @@ const AddDoctor = () => {
       formData.append("experience", experience);
       formData.append("fees", Number(fees));
       formData.append("speciality", speciality);
-      formData.append("education", education);
+      formData.append("degree", degree);
       formData.append("address", address);
       formData.append("about", about);
 
@@ -42,27 +43,27 @@ const AddDoctor = () => {
         console.log(`${key}: ${value}`);
       })
 
-      // const { data } = await axios.post(
-      //   backendUrl + "/api/admin/add-doctor",
-      //   formData,
-      //   { headers: { aToken } }
-      // );
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/add-doctor",
+        formData,
+        { headers: { aToken } }
+      );
 
-      // if (data.success) {
-      //   toast.success(data.message);
-      //   setDocImg(false);
-      //   setName("");
-      //   setEmail("");
-      //   setPassword("");
-      //   setExperience("1 Year");
-      //   setFees("");
-      //   setSpeciality("General physician");
-      //   setEducation("");
-      //   setAddress("");
-      //   setAbout("");
-      // } else {
-      //   toast.error(data.message);
-      // }
+      if (data.success) {
+        toast.success(data.message);
+        setDocImg(false);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setExperience("1 Year");
+        setFees("");
+        setSpeciality("General physician");
+        setDegree("");
+        setAddress("");
+        setAbout("");
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
       console.error("Error adding doctor:", error);
     }
@@ -76,14 +77,14 @@ const AddDoctor = () => {
           <label htmlFor="doc-img">
             <img
               className="w-16 bg-gray-100 rounded-full cursor-pointer"
-              src={docImg ? docImg : assets.upload_area}
+              src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
               alt=""
             />
           </label>
           <input
             onChange={(e) => {
               const file = e.target.files[0];
-              setDocImg(URL.createObjectURL(file));
+              setDocImg(file);
             }}
             type="file"
             id="doc-img"
@@ -189,13 +190,13 @@ const AddDoctor = () => {
             </div>
 
             <div className="flex-1 flex flex-col gap-1">
-              <p>Education</p>
+              <p>Degree</p>
               <input
-                value={education}
-                onChange={(e) => setEducation(e.target.value)}
+                value={degree}
+                onChange={(e) => setDegree(e.target.value)}
                 className="border rounded px-3 py-2"
                 type="text"
-                placeholder="Education"
+                placeholder="degree"
                 required
               />
             </div>
