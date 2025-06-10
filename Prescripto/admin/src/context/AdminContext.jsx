@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+import axios from "axios";
+import toast from 'react-toastify'
 
 export const AdminContext = createContext();
 
@@ -6,6 +8,18 @@ const AdminContextProvider = (props) => {
   const [aToken, setAToken] = useState(localStorage.getItem('aToken')?localStorage.getItem('aToken'):localStorage.getItem(''));
   //   const backendUrl = process.env.VITE_BACKEND_URL;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  //create state variable for doctors list
+  const [doctorsList, setDoctorsList] = useState([]);
+
+  const getAllDoctors = async ()=>{
+    try {
+      console.log("hello")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const value = {
     aToken,
     setAToken,
