@@ -20,20 +20,20 @@ export const addDoctor = async (req, res) => {
     } = req.body;
     let doctorImage = req.file;
     //console log the received data for debugging
-    console.log(
-      {
-        name,
-        email,
-        password,
-        speciality,
-        degree,
-        experience,
-        about,
-        fees,
-        address,
-      },
-      doctorImage
-    );
+    // console.log(
+    //   {
+    //     name,
+    //     email,
+    //     password,
+    //     speciality,
+    //     degree,
+    //     experience,
+    //     about,
+    //     fees,
+    //     address,
+    //   },
+    //   doctorImage
+    // );
     // res.status(200).json({message:"ok"});
     //checking for all data to add a doctor
     if (
