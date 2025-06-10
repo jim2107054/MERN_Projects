@@ -18,7 +18,7 @@ const Login = () => {
         console.log("inside admin login");
         // Admin login logic
         const { data } = await axios.post(
-          backendUrl + "api/admin/admin-login",
+          backendUrl + "/api/admin/admin-login",
           { email, password }
         );
         console.log(data);
