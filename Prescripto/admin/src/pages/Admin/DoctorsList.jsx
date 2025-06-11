@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 
 const DoctorsList = () => {
-  const { doctors, getAllDoctors, aToken } = useContext(AdminContext);
+  const { doctors, getAllDoctors, aToken,changeAvailability } = useContext(AdminContext);
   useEffect(() => {
     getAllDoctors();
   }, [aToken]);
@@ -17,9 +17,11 @@ const DoctorsList = () => {
               <div className="p-4">
                 <p className="text-neutral-800 text-lg font-medium">{item.name}</p>
                 <p className="text-zinc-600 text-sm">{item.speciality}</p>
-                <div className="mt-2 flex items-center gap-2 text-sm text-green-500">
-                  <input type="checkbox" checked={item.available}/>
-                  <p>Available</p>
+                <div className={`mt-2 flex items-center gap-2 text-sm ${item.available ? "text-green-600" : "text-red-600"}`}>
+                  <input onChange={()=>changeAvailability(item._id)} type="checkbox" checked={item.available}/>
+                  {
+                   item.available ? "Available" : "Not Available"
+                  }
                 </div>
               </div>
             </div>
