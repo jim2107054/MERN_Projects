@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -7,9 +10,27 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const onSubmitHandeler = (event) => {
+  const { backendUrl,token,setToken } = useContext(AppContext);
+
+  const onSubmitHandeler = async (event) => {
     event.preventDefault();
-    console.log("Login clicked", email, password);
+    try {
+      const {data} = await axios.post(backendUrl + "/api/user/login", {
+        email,
+        password,
+      });
+      if(data.success){
+        toast.success("Login successful");
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      }
+      else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
