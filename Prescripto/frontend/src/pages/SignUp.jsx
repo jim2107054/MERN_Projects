@@ -26,7 +26,7 @@ const SignUp = () => {
         toast.success("Account created successfully");
         setToken(data.token);
         localStorage.setItem("token", data.token);
-        navigate("/login");
+        navigate("/");
       }
       else{
         toast.error(data.message);

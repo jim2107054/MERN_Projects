@@ -12,7 +12,10 @@ const Navbar = () => {
   const {token,setToken} = useContext(AppContext)
 
   const handleLogout = () => {
-    setToken(false);
+    setToken('');
+    localStorage.removeItem('token');
+    setShowMenu(false);
+    // redirect to login page after logout
     navigate('/login')
   }
 
@@ -38,7 +41,7 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {token ? (
+        {token || localStorage.getItem('token') ? (
           <div className=" flex items-center gap-2 cursor-pointer group relative">
             {/* when the used is logged in, show the dropdown menu with profile icon and logout button */}
             <img className="w-12 rounded-full" src={profilo_pic} alt="Profile" />
