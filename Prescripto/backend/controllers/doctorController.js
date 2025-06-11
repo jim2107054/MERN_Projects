@@ -13,3 +13,13 @@ export const changeAvailability = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+export const doctorList = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({ available: true }).select(["-password", "-email"]);
+    res.json({ success: true, doctors });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};

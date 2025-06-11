@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/mongoDB.js';
 import { uploadImageOnCloudinary } from './config/cloudinary.js';
 import adminRouter from './routes/adminRoute.js';
+import doctorRouter from './routes/doctorRoute.js';
 dotenv.config();
 
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 //api endpoints
 app.use("/api/admin",adminRouter)
+app.use("/api/doctors",doctorRouter)
 
 //routes
 app.get('/', (req, res) => {
