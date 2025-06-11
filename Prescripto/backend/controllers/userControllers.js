@@ -49,3 +49,32 @@ export const registerUser = async (req,res)=>{
         res.json({success:false, message: "Internal Server Error" });
     }
 }
+
+
+// api to login user.
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.json({success:false, message: "Please fill all the details" });
+        }
+
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.json({success:false, message: "User does not exist" });
+        }
+
+        //compare the password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if(!isPasswordValid){
+            return res.json({success:false, message: "Invalid password" });
+        }
+
+        //create a token
+        const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
+        res.json({success:true, token, message: "logged in successful"});
+
+    } catch (error) {
+        res.json({success:false, message: "Internal Server Error" });
+    }
+}
