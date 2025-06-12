@@ -2,7 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 // api to register user.
 export const registerUser = async (req, res) => {
@@ -96,7 +96,7 @@ export const getProfile = async (req, res) => {
   try {
     const { userId } = req.body; // userId should be attached by authUser middleware
     const userData = await userModel.findById(userId).select("-password");
-    res.json({ success: true, userData });
+    res.json({ success: true,message:"Fetched User",userData });
   } catch (error) {
     res.json({ success: false, message: "Internal Server Error" });
   }
@@ -115,26 +115,29 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    const userdata = await userModel.findByIdAndUpdate(userId, {
+    const userData = await userModel.findByIdAndUpdate(userId, {
       name,
       phone,
       address,
       age,
-      gender
+      gender,
     });
-    if(imageFile){
+    if (imageFile) {
       //Upload image to cloudinary
-      const imageUpload = await cloudinary.uploader.upload(imageFile.path,{resource_type:'image'})
+      const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+        resource_type: "image",
+      });
 
       const imageURL = imageUpload.secure_url;
       await userModel.findByIdAndUpdate(userId, {
-        image: imageURL
+        image: imageURL,
       });
     }
-    // console.log(userdata)
+    // console.log(userData)
     res.json({
       success: true,
       message: "Profile Updated",
+      userData
     });
   } catch (error) {
     res.json({ success: false, message: "Internal Server Error" });

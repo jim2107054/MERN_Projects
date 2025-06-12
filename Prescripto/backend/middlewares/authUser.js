@@ -11,6 +11,8 @@ export const authUser = (req, res, next) => {
     // Verify the token
     const token_decode = jwt.verify(token, process.env.JWT_SECRET);
 
+    // Ensure req.body exists before setting userId to avoid TypeError
+    if (!req.body) req.body = {};
     req.body.userId = token_decode.id; // Attach user ID to the request body
 
     next();
