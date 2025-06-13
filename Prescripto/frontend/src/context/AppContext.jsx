@@ -31,13 +31,12 @@ const AppContextProvider = (props) => {
       const { data } = await axios.get(backendUrl + "/api/user/get-profile", {
         headers: { token },
       });
-      console.log(data)
+      // console.log(data)
       if (data.success) {
         setUserData(data.userData);
       } else {
         toast.error(data.message);
       }
-      console.log(userData)
     } catch (error) {
       toast.error(error.message);
       console.log("error from catch block")

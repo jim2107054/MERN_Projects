@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { assets } from "./../assets/assets";
 import { AppContext } from "../context/AppContext";
 
 const MyProfile = () => {
@@ -7,7 +6,7 @@ const MyProfile = () => {
 
   const [isEdit, setIsEdit] = useState(true);
 
-  return (
+  return userData && (
     <div className="max-w-xl flex flex-col gap-4 text-base">
       <div className="flex flex-col items-center">
         <img className="w-32 rounded-lg" src={userData.image} alt="" />
@@ -33,9 +32,9 @@ const MyProfile = () => {
           CONTACT INFORMATION
         </p>
         <div className="flex flex-col gap-y-2.5 mt-3 text-neutral-800">
-          <p className="flex gap-x-12">
+          <div className="flex gap-x-12">
             Email <p>{userData.email}</p>
-          </p>
+          </div>
           <div className="flex items-center gap-10">
             <p>Phone </p>
             {isEdit ? (
