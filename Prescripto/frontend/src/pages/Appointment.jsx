@@ -9,7 +9,7 @@ import axios from "axios";
 const Appointment = () => {
   const { docId } = useParams();
   const navigate = useNavigate();
-  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } =
+  const { doctors, currencySymbol, backendUrl, token, getDoctorsData,setAppointedDoctors } =
     useContext(AppContext);
 
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -110,9 +110,12 @@ const Appointment = () => {
         { headers: { token } }
       );
 
+      const doctor = await doctors.find((doc) => doc._id === docId);
+
       if (data.success) {
         toast.success("Appointment booked successfully");
         getDoctorsData(); // Refresh the doctors list
+        setAppointedDoctors((prev) => [...prev, doctor]); // Add the booked doctor to the appointed doctors list
         // console.log(data);
         // console.log("Appointment booked successfully");
         navigate("/my-appointments");

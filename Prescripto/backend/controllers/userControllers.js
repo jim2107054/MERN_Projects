@@ -154,7 +154,7 @@ export const bookAppointment = async (req, res) => {
     if (!docData.available) {
       return res.json({ success: false, message: "Doctor is not available" });
     }
-    let slots_booked = docData.slotsBooked || [];
+    let slots_booked = docData.slots_booked || [];
 
     // Check if the slot availability
     if (slots_booked[slotDate]) {
@@ -170,7 +170,7 @@ export const bookAppointment = async (req, res) => {
 
     //get the user data
     const userData = await userModel.findById(userId).select("-password");
-    delete docData.slotsBooked; // Remove slotsBooked from doctor data to avoid sending it to the client
+    delete docData.slots_booked; // Remove slots_booked from doctor data to avoid sending it to the client
 
     //create a new appointment
     const appointmentData = {
@@ -188,7 +188,7 @@ export const bookAppointment = async (req, res) => {
 
     //save new slots data in
     await doctorModel.findByIdAndUpdate(doctorId, {
-      slotsBooked: slots_booked,
+      slots_booked: slots_booked,
     });
     res.json({
       success: true,

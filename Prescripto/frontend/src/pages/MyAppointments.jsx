@@ -3,14 +3,22 @@ import { AppContext } from './../context/AppContext';
 
 const MyAppointments = () => {
 
-  const {doctors} = useContext(AppContext)
+  const {appointedDoctors,setAppointedDoctors} = useContext(AppContext)
+  console.log(appointedDoctors)
+
+  const cancledAppointment = (index) => {
+    const updatedAppointments = appointedDoctors.filter((_, i) => i !== index);
+    setAppointedDoctors(updatedAppointments);
+  }
+
+  console.log(appointedDoctors)
 
   return (
     <div>
       <p className='pb-3 mt-10 mb-5 font-medium text-zinc-700 border-b-2 text-2xl'>My appointment</p>
       <div>
         {
-          doctors.slice(0,5).map((item,index)=>(
+          appointedDoctors.map((item,index)=>(
             <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b-2' key={index}>
               <div className="">
                 <img className='w-32 lg:w-40 bg-indigo-200 rounded-lg' src={item.image} alt="" />
@@ -26,7 +34,9 @@ const MyAppointments = () => {
               <div></div>
               <div className='flex flex-col gap-2 justify-end'>
                 <button className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-blue-500 hover:scale-105 duration-500 transition-all hover:text-white'>Pay Online</button>
-                <button className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancle</button>
+                <button
+                onClick={() => cancledAppointment(index)}
+                className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancle</button>
               </div>
             </div>
           ))
