@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
-import profilo_pic from '../assets/assets_frontend/profile_pic.png'
 import dropdownIcon from "../assets/assets_frontend/dropdown_icon.svg"
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
@@ -41,7 +40,7 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {token || localStorage.getItem('token') ? (
+        {(token || localStorage.getItem('token')) && userData ? (
           <div className=" flex items-center gap-2 cursor-pointer group relative">
             {/* when the used is logged in, show the dropdown menu with profile icon and logout button */}
             <img className="w-12 h-12 rounded-full" src={userData.image} alt="Profile" />
