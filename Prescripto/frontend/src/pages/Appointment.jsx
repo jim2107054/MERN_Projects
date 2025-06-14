@@ -70,11 +70,23 @@ const Appointment = () => {
           minute: "2-digit",
         });
 
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+        let year = currentDate.getFullYear();
+
+        const slotDate = day + "_" + month + "_" + year;
+        const slotTime = formattedTime
+
+        const isSlotAvailable = (docInfo.slots_booked[slotDate] &&
+          docInfo.slots_booked[slotDate].includes(slotTime))? false : true;
+
         //add slot to array
-        timeSlots.push({
+        if( isSlotAvailable) {
+          timeSlots.push({
           datetime: new Date(currentDate),
           time: formattedTime,
         });
+        }
         //incrementing the time by 30 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
