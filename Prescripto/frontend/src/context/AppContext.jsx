@@ -8,7 +8,6 @@ const AppContextProvider = (props) => {
   const currencySymbol = "$";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [doctors, setDoctors] = useState([]);
-  const [appointedDoctors, setAppointedDoctors] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : null);
 
   const [userData, setUserData] = useState(false);
@@ -67,8 +66,6 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     loadUserProfileData,
-    appointedDoctors,
-    setAppointedDoctors,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
