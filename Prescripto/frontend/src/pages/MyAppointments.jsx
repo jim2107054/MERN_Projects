@@ -7,10 +7,16 @@ const MyAppointments = () => {
 
   const {backendUrl,token} = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
-  
+
   const cancledAppointment = (index) => {
     const updatedAppointments = appointments.filter((_, i) => i !== index);
     setAppointments(updatedAppointments);
+  }
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const formatDate = (slotDate)=>{
+    const date = slotDate.split("_");
+    return date[0]+" "+months[parseInt(date[1])-1]+" "+date[2];
   }
 
   const getUserAppointments = async () =>{
@@ -50,7 +56,7 @@ const MyAppointments = () => {
                 <p className='text-sm font-medium mb-2'>{item.doctorData.speciality}</p>
                 <p className='text-neutral-900 font-medium mt-1'>Address : </p>
                 <p className='text-sm'>{item.doctorData.address}</p>
-                <p className='text-sm mt-1'><span className='text-base text-neutral-700 font-medium'>Date & Time : </span>{item.slotDate} | {item.slotTime}</p>
+                <p className='text-sm mt-1'><span className='text-base text-neutral-700 font-medium'>Date & Time : </span>{formatDate(item.slotDate)} | {item.slotTime}</p>
               </div>
               {/*---Basically use this div to make it responsive*/}
               <div></div>
