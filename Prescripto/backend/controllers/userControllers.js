@@ -199,3 +199,14 @@ export const bookAppointment = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// api to get all appointments of a user to show in MyAppointments page.
+export const listAppointments = async (req, res) => {
+  try {
+    const { userId } = req.body; // userId should be attached by authUser middleware
+    const appointments = await appointmentModel.find({ userId });
+    res.json({ success: true, appointments });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
