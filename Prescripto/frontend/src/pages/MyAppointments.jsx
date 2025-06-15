@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const MyAppointments = () => {
 
-  const {backendUrl,token} = useContext(AppContext)
+  const {backendUrl,token,getDoctorsData} = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -35,6 +35,7 @@ const MyAppointments = () => {
       if(data.success){
         toast.success(data.message);
         getUserAppointments(); // Refresh the appointments list after cancellation
+        getDoctorsData(); // Refresh the doctors list to update their slots
       }
       else{
         toast.error(data.message);
