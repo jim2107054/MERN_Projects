@@ -75,7 +75,7 @@ const MyAppointments = () => {
                 <button className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-blue-500 hover:scale-105 duration-500 transition-all hover:text-white'>Pay Online</button>
                 <button
                 onClick={() => cancelAppointment(item._id)}
-                className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancle</button>
+                className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancel</button>
               </div>
             </div>
           ))
