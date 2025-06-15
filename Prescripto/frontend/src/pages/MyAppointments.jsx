@@ -8,10 +8,6 @@ const MyAppointments = () => {
   const {backendUrl,token} = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
 
-  const cancledAppointment = (index) => {
-    const updatedAppointments = appointments.filter((_, i) => i !== index);
-    setAppointments(updatedAppointments);
-  }
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   const formatDate = (slotDate)=>{
@@ -27,6 +23,21 @@ const MyAppointments = () => {
       if(data.success){
         setAppointments(data.appointments.reverse());
         console.log(data.appointments);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
+  const cancelAppointment = async (appointmentId)=>{
+    try {
+      const {data} = await axios.post(backendUrl+"/api/user/cancel-appointment",{appointmentId},{headers:{token}});
+      if(data.success){
+        toast.success(data.message);
+        getUserAppointments(); // Refresh the appointments list after cancellation
+      }
+      else{
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -63,7 +74,7 @@ const MyAppointments = () => {
               <div className='flex flex-col gap-2 justify-end'>
                 <button className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-blue-500 hover:scale-105 duration-500 transition-all hover:text-white'>Pay Online</button>
                 <button
-                onClick={() => cancledAppointment(index)}
+                onClick={() => cancelAppointment(item._id)}
                 className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancle</button>
               </div>
             </div>
