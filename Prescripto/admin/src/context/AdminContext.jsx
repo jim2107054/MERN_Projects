@@ -15,6 +15,8 @@ const AdminContextProvider = (props) => {
 
   //create state variable for doctors list
   const [doctors, setDoctors] = useState([]);
+  //create state variable for appointments list
+  const [appointments, setAppointments] = useState([]);
 
   const getAllDoctors = async () => {
     try {
@@ -52,6 +54,24 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const getAllAppointments = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
+        headers: { aToken },
+      });
+      if (data.success) {
+        console.log("apoint data");
+        console.log(data.appointments);
+        setAppointments(data.appointments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     aToken,
     setAToken,
@@ -59,6 +79,9 @@ const AdminContextProvider = (props) => {
     doctors,
     getAllDoctors,
     changeAvailability,
+    getAllAppointments,
+    appointments,
+    setAppointments,
   };
 
   return (

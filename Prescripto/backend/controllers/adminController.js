@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { uploadImageOnCloudinary } from "./../config/cloudinary.js";
 import doctorModel from "./../models/DoctorModel.js";
 import jwt from "jsonwebtoken";
+import appointmentModel from "./../models/appointModel.js";
 
 //API for adding a new doctor
 export const addDoctor = async (req, res) => {
@@ -138,6 +139,17 @@ export const allDoctors = async (req, res) => {
       return res.json({ success: false, message: "No doctors found" });
     }
     res.json({ success: true, doctors });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to get all appointments list for admin panel
+export const appointmentsAdmin = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({});
+    res.json({ success: true, appointments });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
