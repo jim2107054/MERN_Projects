@@ -2,10 +2,12 @@ import { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { DoctorContext } from "../context/DoctorContext";
 
 const Login = () => {
   const [state, setState] = useState("Admin");
   const { setAToken, backendUrl } = useContext(AdminContext);
+  const {dToken, setDToken } = useContext(DoctorContext)
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +35,16 @@ const Login = () => {
         }
       } else {
         // Doctor login logic can be added here
+        const {data} = await axios.post(backendUrl+'/api/doctors/login',{email,password})
+        if(data.success){
+          localStorage.setItem("dToken", data.token); // Store token in local storage, so that when we reload the page, doctor will still be logged in
+          setDToken(data.token);
+          toast.success("Login successful!");
+          console.log("doctor token", data.token);
+        }
+        else{
+          toast.error(data.message || "Login Failed.")
+        }
       }
     } catch (error) {
       // console.error("Login failed:", error);
