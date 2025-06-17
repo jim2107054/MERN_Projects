@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const AllAppointments = () => {
-  const { aToken, getAllAppointments, appointments, backendUrl } =
+  const { aToken, getAllAppointments, appointments, backendUrl,cancelAppointment } =
     useContext(AdminContext);
   const { currency } = useContext(AppContext);
 
@@ -29,26 +29,6 @@ const AllAppointments = () => {
   const formatDate = (slotDate) => {
     const date = slotDate.split("_");
     return date[0] + " " + months[parseInt(date[1]) - 1] + " " + date[2];
-  };
-
-  //cancel appointment by admin
-  const handleCancelAppointment = async (appointmentId) => {
-    try {
-      const { data } = await axios.post(
-        backendUrl + "/api/admin/cancel-appointment",
-        { appointmentId },
-        { headers: { aToken } }
-      );
-      console.log(data);
-      if (data.success) {
-        toast.success(data.message);
-        getAllAppointments(); // Refresh the appointments list after cancellation
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
   };
 
   useEffect(() => {
@@ -110,7 +90,7 @@ const AllAppointments = () => {
                   {currency}
                 </p>
                 <img
-                  onClick={() => handleCancelAppointment(item._id)}
+                  onClick={() => cancelAppointment(item._id)}
                   className="w-10 cursor-pointer"
                   src={assets.cancel_icon}
                   alt=""
