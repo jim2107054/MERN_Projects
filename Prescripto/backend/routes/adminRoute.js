@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { addDoctor, adminLogin, allDoctors, appointmentsAdmin, cancelAppointmentAdmin } from "../controllers/adminController.js";
+import { addDoctor, adminDashboard, adminLogin, allDoctors, appointmentsAdmin, cancelAppointmentAdmin } from "../controllers/adminController.js";
 import upload from "../middlewares/multer.js";
 import { authAdmin } from "../middlewares/authAdmin.js";
 import { changeAvailability } from "../controllers/doctorController.js";
@@ -12,5 +12,6 @@ adminRouter.post("/all-doctors",authAdmin,allDoctors);//add authAdmin middleware
 adminRouter.post("/change-availability",authAdmin,changeAvailability);//add authAdmin middleware to authenticate admin to access this api
 adminRouter.get("/appointments",authAdmin,appointmentsAdmin)
 adminRouter.post("/cancel-appointment",authAdmin,cancelAppointmentAdmin);//add authAdmin middleware to authenticate admin to access this api
+adminRouter.get("/dashboard",authAdmin,adminDashboard)
 
 export default adminRouter;
