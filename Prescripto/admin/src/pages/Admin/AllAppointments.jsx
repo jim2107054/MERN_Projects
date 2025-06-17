@@ -2,9 +2,12 @@ import React from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { useContext } from "react";
 import { useEffect } from "react";
+import { AppContext } from "../../context/AppContext";
+import { assets } from "../../assets/assets";
 
 const AllAppointments = () => {
   const { aToken, getAllAppointments, appointments } = useContext(AdminContext);
+  const {currency} = useContext(AppContext)
 
   const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -44,19 +47,15 @@ const AllAppointments = () => {
                   <p>{item.slotTime}</p>
                   <p>{formatDate(item.slotDate)}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <img className="w-10 h-10 bg-gray-200 rounded-full" src={item.doctorData.image} alt="" /> 
+                <div className="flex group items-center gap-2">
+                  <img className="w-10 h-10 bg-gray-400 rounded-full" src={item.doctorData.image} alt="" /> 
                   <div className="flex flex-col justify-center">
-                    <p className="text-gray-800">{item.doctorData.name}</p>
-                    <p className="text-xs text-gray-500">{item.doctorData.speciality}</p>
+                    <p className="text-gray-800 group-hover:text-white">{item.doctorData.name}</p>
+                    <p className="text-xs group-hover:text-white text-gray-500">{item.doctorData.speciality}</p>
                   </div>
                 </div>
-                <p>{item.doctorData.fees}$</p>
-                {
-                  item.doctorData.payment 
-                  ?<p className="text-green-500">Paid</p>
-                  :<p className="text-red-500">Unpaid</p>
-                }
+                <p>{item.doctorData.fees}{currency}</p>
+                <img className="w-10 cursor-pointer" src={assets.cancel_icon} alt="" />
               </div>
             ))
           }
