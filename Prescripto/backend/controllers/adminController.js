@@ -155,3 +155,43 @@ export const appointmentsAdmin = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// API to cancel an appointment by admin
+export const cancelAppointmentAdmin = async (req, res) => {
+  try {
+    const { adminId, appointmentId } = req.body; //we get adminId from authAdmin middleware and appointmentId from request body
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    if (!adminId) {
+      return res.json({
+        success: false,
+        message: "Please login as admin to cancel appointment",
+      });
+    }
+    if (!appointmentData) {
+      return res.json({ success: false, message: "Appointment not found" });
+    }
+    await appointmentModel.findByIdAndDelete(appointmentId, {
+      cancelled: true,
+    });
+
+    //remove the appointment from the doctor's appointments array
+    const { doctorId, slotTime, slotDate } = appointmentData;
+    const doctorData = await doctorModel.findById(doctorId);
+
+    let slots_booked = doctorData.slots_booked;
+    if (slots_booked[slotDate]) {
+      slots_booked[slotDate] = slots_booked[slotDate].filter(
+        (time) => time !== slotTime
+      );
+    }
+    // Update the doctor's slots_booked
+    await doctorModel.findByIdAndUpdate(doctorId, {
+      slots_booked: slots_booked,
+    });
+    res.json({ success: true, message: "Cancelled Appointment" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
