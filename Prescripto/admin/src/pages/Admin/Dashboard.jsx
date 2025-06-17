@@ -3,7 +3,27 @@ import { AdminContext } from "../../context/AdminContext";
 import { assets } from "./../../assets/assets";
 
 const Dashboard = () => {
-  const { dashData, getDashData, aToken } = useContext(AdminContext);
+  const { dashData, getDashData, aToken, cancelAppointment } =
+    useContext(AdminContext);
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const formatDate = (slotDate) => {
+    const date = slotDate.split("_");
+    return date[0] + " " + months[parseInt(date[1]) - 1] + " " + date[2];
+  };
 
   useEffect(() => {
     if (aToken) {
@@ -56,12 +76,23 @@ const Dashboard = () => {
             dashData.latestAppointments.length > 0 ? (
               // Map through latest appointments and display them
               dashData.latestAppointments.map((item, index) => (
-                <div className="flex gap-5" key={index}>
-                  <img className="w-14" src={item.doctorData.image} alt="" />
-                  <div>
-                    <p>{item.doctorData.name}</p>
-                    <p>{item.slotDate}</p>
+                <div
+                  className="flex gap-5 items-center px-6 py-3 hover:bg-gray-300 justify-between"
+                  key={index}
+                >
+                  <div className="flex items-center gap-3">
+                    <img className="w-14 rounded-full" src={item.doctorData.image} alt="" />
+                    <div className="flex-1 text-sm">
+                      <p className="text-gray-800 font-medium">{item.doctorData.name}</p>
+                      <p className="text-gray-600">{formatDate(item.slotDate)}</p>
+                    </div>
                   </div>
+                  <img
+                    onClick={() => cancelAppointment(item._id)}
+                    className="w-10 cursor-pointer"
+                    src={assets.cancel_icon}
+                    alt=""
+                  />
                 </div>
               ))
             ) : (
