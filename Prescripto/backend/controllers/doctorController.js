@@ -137,3 +137,39 @@ export const appointmentCancel = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// API to get dashboard data for doctor panel
+export const doctorDashboard = async (req, res) => {
+  try {
+    const { doctorId } = req.body;
+    const appointments = await appointmentModel.find({ doctorId });
+
+    let totalEarnings = 0;
+    appointments.map((item) => {
+      if (item.isCompleted || item.payment) {
+        totalEarnings += item.amount;
+      }
+    });
+
+    let totalPatients = [];
+    // Get unique patients
+    appointments.forEach((item) => {
+      if (item.userId && !totalPatients.includes(item.userId)) {
+        totalPatients.push(item.userId);
+      }
+    });
+
+    const dashData = {
+      totalEarnings,
+      appointments: appointments.length,
+      patients: totalPatients.length,
+      completed: appointments.filter((item) => item.isCompleted).length,
+      cancelled: appointments.filter((item) => item.cancelled).length,
+      latestAppointments: appointments.reverse().slice(0, 5),
+    };
+    res.json({ success: true, dashData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
