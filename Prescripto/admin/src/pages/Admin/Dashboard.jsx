@@ -81,18 +81,32 @@ const Dashboard = () => {
                   key={index}
                 >
                   <div className="flex items-center gap-3">
-                    <img className="w-14 rounded-full" src={item.doctorData.image} alt="" />
+                    <img
+                      className="w-14 rounded-full"
+                      src={item.doctorData.image}
+                      alt=""
+                    />
                     <div className="flex-1 text-sm">
-                      <p className="text-gray-800 font-medium">{item.doctorData.name}</p>
-                      <p className="text-gray-600">{formatDate(item.slotDate)}</p>
+                      <p className="text-gray-800 font-medium">
+                        {item.doctorData.name}
+                      </p>
+                      <p className="text-gray-600">
+                        {formatDate(item.slotDate)}
+                      </p>
                     </div>
                   </div>
-                  <img
-                    onClick={() => cancelAppointment(item._id)}
-                    className="w-10 cursor-pointer"
-                    src={assets.cancel_icon}
-                    alt=""
-                  />
+                  {item.cancelled ? (
+                    <p className="text-red-500">Cancelled</p>
+                  ) : item.isCompleted ? (
+                    <p className="text-green-500">Completed</p>
+                  ) : (
+                    <img
+                      onClick={() => cancelAppointment(item._id)}
+                      className="w-10 cursor-pointer"
+                      src={assets.cancel_icon}
+                      alt=""
+                    />
+                  )}
                 </div>
               ))
             ) : (
