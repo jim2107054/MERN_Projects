@@ -59,7 +59,8 @@ const MyAppointments = () => {
       <div>
         {
           appointments.map((item,index)=>(
-            <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b-2' key={index}>
+            (!item.cancelled && !item.isCompleted) && (
+              <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b-2' key={index}>
               <div className="">
                 <img className='w-32 lg:w-40 bg-indigo-200 rounded-lg' src={item.doctorData.image} alt="" />
               </div>
@@ -79,6 +80,7 @@ const MyAppointments = () => {
                 className='text-base font-light text-gray-900 text-center sm:min-w-48 py-2 px-8 border border-blue-300 rounded-xl hover:bg-red-500 hover:scale-105 duration-500 transition-all hover:text-white'>Cancel</button>
               </div>
             </div>
+            )
           ))
         }
       </div>
