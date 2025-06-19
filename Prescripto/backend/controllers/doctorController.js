@@ -173,3 +173,30 @@ export const doctorDashboard = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// API to get doctor profile for Doctor panel
+export const doctorProfile = async (req, res) => {
+  try {
+    const { doctorId } = req.body;
+    const profileData = await doctorModel
+      .findById(doctorId)
+      .select("-password");
+    if (!profileData) {
+      return res.json({ success: false, message: "Doctor not found" });
+    }
+    res.json({ success: true, profileData });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to update doctor profile for Doctor panel
+export const updateDoctorProfile = async (req, res) => {
+  try {
+    const { doctorId, fees, address, available } = req.body;
+    await doctorModel.findByIdAndUpdate(doctorId, { fees, address, available });
+    res.json({ success: true, message: "Profile updated successfully" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
