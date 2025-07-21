@@ -37,8 +37,10 @@ app.get('/', (req, res) => {
   res.send('Welcome to the backend server!');
 });
 
-// Start the server
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server is running on port ${PORT}`);
-});
+export default app;
+
+// // Start the server
+// app.listen(PORT, () => {
+//   connectDB();
+//   console.log(`Server is running on port ${PORT}`);
+// });
