@@ -25,6 +25,7 @@ app.use(cors(
 ));
 app.use(express.json());
 
+
 //api endpoints
 app.use("/api/admin",adminRouter)
 app.use("/api/doctors",doctorRouter)
