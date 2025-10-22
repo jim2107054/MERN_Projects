@@ -111,20 +111,23 @@ export const updateProfile = async (req, res) => {
     const { userId, name, phone, address, age, gender } = req.body;
     const imageFile = req.file; // Assuming we're using multer for file uploads
 
-    if (!name || !phone || !address || !age || !gender) {
+    if (!name || !phone || !age || !gender) {
       return res.json({
         success: false,
         message: "Please fill all the details",
       });
     }
 
-    const userData = await userModel.findByIdAndUpdate(userId, {
+    // Prepare update data
+    const updateData = {
       name,
       phone,
-      address,
+      address: address || "",
       age,
       gender,
-    });
+    };
+
+    // If image file is provided, upload to cloudinary first
     if (imageFile) {
       //Upload image to cloudinary
       const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
@@ -132,10 +135,14 @@ export const updateProfile = async (req, res) => {
       });
 
       const imageURL = imageUpload.secure_url;
-      await userModel.findByIdAndUpdate(userId, {
-        image: imageURL,
-      });
+      updateData.image = imageURL;
     }
+
+    // Update user data with all fields including image if provided
+    const userData = await userModel.findByIdAndUpdate(userId, updateData, {
+      new: true, // Return the updated document
+    }).select("-password");
+
     // console.log(userData)
     res.json({
       success: true,
@@ -143,6 +150,7 @@ export const updateProfile = async (req, res) => {
       userData,
     });
   } catch (error) {
+    console.log(error);
     res.json({ success: false, message: "Internal Server Error" });
   }
 };

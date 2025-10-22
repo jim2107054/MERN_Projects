@@ -15,26 +15,29 @@ const MyProfile = () => {
       const formData = new FormData();
       formData.append("name", userData.name);
       formData.append("phone", userData.phone);
-      formData.append("address", userData.address);
-      formData.append("gender",userData.gender)
+      formData.append("address", userData.address || "");
+      formData.append("gender", userData.gender);
       formData.append("age", userData.age);
+      
+      // Only append image if a new one was selected
       if (image) {
         formData.append("image", image);
       }
 
       const {data} = await axios.post(backendUrl+'/api/user/update-profile',formData,{headers:{token}})
+      
       if(data.success){
         toast.success(data.message)
-        setIsEdit(false);
         await loadUserProfileData();// Reload the user data to reflect changes
+        setIsEdit(false);
         setImage(false);
       }
       else{
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message);
-      console.log("error from catch block")
+      console.log("Error updating profile:", error);
+      toast.error(error.response?.data?.message || error.message);
     }
   }
 
