@@ -8,7 +8,11 @@ import userModel from "./../models/userModel.js";
 
 //API for adding a new doctor
 export const addDoctor = async (req, res) => {
-  console.log("backend a data ase");
+  console.log("=== ADD DOCTOR API CALLED ===");
+  console.log("Headers:", req.headers);
+  console.log("Request body:", req.body);
+  console.log("Uploaded file:", req.file);
+  
   try {
     const {
       name,
@@ -23,8 +27,7 @@ export const addDoctor = async (req, res) => {
     } = req.body;
     let doctorImage = req.file;
 
-    console.log("Request body:", req.body);
-    console.log("Uploaded file:", doctorImage);
+    console.log("Parsed data - Name:", name, "Email:", email, "Image:", doctorImage ? "Present" : "Missing");
 
     //checking for all data to add a doctor
     if (
@@ -39,7 +42,23 @@ export const addDoctor = async (req, res) => {
       !fees ||
       !address
     ) {
-      return res.status(400).json({ success: false, message: "Please fill all fields" });
+      const missingFields = [];
+      if (!name) missingFields.push('name');
+      if (!email) missingFields.push('email');
+      if (!password) missingFields.push('password');
+      if (!speciality) missingFields.push('speciality');
+      if (!degree) missingFields.push('degree');
+      if (!experience) missingFields.push('experience');
+      if (!about) missingFields.push('about');
+      if (!doctorImage) missingFields.push('doctorImage');
+      if (!fees) missingFields.push('fees');
+      if (!address) missingFields.push('address');
+      
+      console.log("Missing fields:", missingFields);
+      return res.status(400).json({ 
+        success: false, 
+        message: "Missing required fields: " + missingFields.join(', ')
+      });
     }
 
     //checking if doctor already exists
