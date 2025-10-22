@@ -8,6 +8,7 @@ import userModel from "./../models/userModel.js";
 
 //API for adding a new doctor
 export const addDoctor = async (req, res) => {
+  console.log("backend a data ase");
   try {
     const {
       name,
@@ -21,22 +22,10 @@ export const addDoctor = async (req, res) => {
       address,
     } = req.body;
     let doctorImage = req.file;
-    //console log the received data for debugging
-    // console.log(
-    //   {
-    //     name,
-    //     email,
-    //     password,
-    //     speciality,
-    //     degree,
-    //     experience,
-    //     about,
-    //     fees,
-    //     address,
-    //   },
-    //   doctorImage
-    // );
-    // res.status(200).json({message:"ok"});
+
+    console.log("Request body:", req.body);
+    console.log("Uploaded file:", doctorImage);
+
     //checking for all data to add a doctor
     if (
       !name ||
@@ -50,23 +39,23 @@ export const addDoctor = async (req, res) => {
       !fees ||
       !address
     ) {
-      return res.json({ success: false, message: "Please fill all fields" });
+      return res.status(400).json({ success: false, message: "Please fill all fields" });
     }
 
     //checking if doctor already exists
     const existingDoctor = await doctorModel.findOne({ email });
     if (existingDoctor) {
-      return res.json({ success: false, message: "Doctor already exists" });
+      return res.status(400).json({ success: false, message: "Doctor already exists" });
     }
 
     //validating email
     if (!validator.isEmail(email)) {
-      return res.json({ success: false, message: "Invalid email" });
+      return res.status(400).json({ success: false, message: "Invalid email" });
     }
 
     //validating strong password
     if (password.length < 8) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Password must be at least 8 characters long",
       });
@@ -77,11 +66,16 @@ export const addDoctor = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     //uploading doctor image to cloudinary
-    if (!doctorImage) {
-      res.json({ success: false, message: "Please upload a doctor image" });
+    let image;
+    try {
+      image = await uploadImageOnCloudinary(doctorImage.path);
+      if (!image) {
+        return res.status(400).json({ success: false, message: "Failed to upload image" });
+      }
+    } catch (uploadError) {
+      console.error("Image upload error:", uploadError);
+      return res.status(400).json({ success: false, message: "Failed to upload image to cloudinary" });
     }
-
-    let image = await uploadImageOnCloudinary(doctorImage.path);
 
     //creating doctor object
     const doctorData = {
@@ -95,21 +89,24 @@ export const addDoctor = async (req, res) => {
       about,
       fees: parseFloat(fees), // Convert string to number
       address,
-      date: new Date(), // Added date field to fix validation error
+      date: Date.now(), // Use Date.now() to get timestamp as number
     };
+
+    console.log("Doctor data to save:", doctorData);
 
     const newDoctor = await doctorModel.create(doctorData);
     if (!newDoctor) {
-      return res.json({ success: false, message: "Failed to add doctor" });
+      return res.status(500).json({ success: false, message: "Failed to add doctor" });
     }
-    res.json({
+    
+    res.status(201).json({
       success: true,
       message: "Doctor added successfully",
       doctor: newDoctor,
     });
   } catch (error) {
     console.error("Error adding doctor:", error);
-    res.json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error: " + error.message });
   }
 };
 

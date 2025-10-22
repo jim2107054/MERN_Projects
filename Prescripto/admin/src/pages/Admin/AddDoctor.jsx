@@ -39,8 +39,10 @@ const AddDoctor = () => {
       formData.append("about", about);
 
       //console log formData
+      console.log("console doctor data from admin(frontend)");
       formData.forEach((value,key)=>{
         console.log(`${key}: ${value}`);
+        console.log("first");
       })
 
       const { data } = await axios.post(
