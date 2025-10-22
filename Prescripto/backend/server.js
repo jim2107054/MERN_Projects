@@ -19,9 +19,18 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, process.env.ADMIN_URL],
-  credentials: true
+  origin: [
+    process.env.FRONTEND_URL, 
+    process.env.ADMIN_URL,
+    process.env.BACKEND_PRODUCTION_URL
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 app.use(express.json());
 
 // Routes
