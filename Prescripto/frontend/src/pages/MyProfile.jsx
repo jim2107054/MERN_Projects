@@ -15,46 +15,26 @@ const MyProfile = () => {
       const formData = new FormData();
       formData.append("name", userData.name);
       formData.append("phone", userData.phone);
-      formData.append("address", userData.address || "");
-      formData.append("gender", userData.gender);
+      formData.append("address", userData.address);
+      formData.append("gender",userData.gender)
       formData.append("age", userData.age);
-      
-      // Only append image if a new one was selected
       if (image) {
         formData.append("image", image);
       }
 
-      const {data} = await axios.post(backendUrl+'/api/user/update-profile',formData,{
-        headers:{
-          token,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      
+      const {data} = await axios.post(backendUrl+'/api/user/update-profile',formData,{headers:{token}})
       if(data.success){
         toast.success(data.message)
-        await loadUserProfileData();// Reload the user data to reflect changes
         setIsEdit(false);
+        await loadUserProfileData();// Reload the user data to reflect changes
         setImage(false);
       }
       else{
         toast.error(data.message)
       }
     } catch (error) {
-      console.log("Error updating profile:", error);
-      if (error.response) {
-        // Server responded with error status
-        console.log("Error response:", error.response.data);
-        toast.error(error.response.data?.message || `Server Error: ${error.response.status}`);
-      } else if (error.request) {
-        // Request made but no response received
-        console.log("No response received:", error.request);
-        toast.error("No response from server. Please check your connection.");
-      } else {
-        // Error in setting up request
-        console.log("Request setup error:", error.message);
-        toast.error("Error setting up request: " + error.message);
-      }
+      toast.error(error.message);
+      console.log("error from catch block")
     }
   }
 

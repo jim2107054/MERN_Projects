@@ -111,89 +111,39 @@ export const updateProfile = async (req, res) => {
     const { userId, name, phone, address, age, gender } = req.body;
     const imageFile = req.file; // Assuming we're using multer for file uploads
 
-    if (!name || !phone || !age || !gender) {
+    if (!name || !phone || !address || !age || !gender) {
       return res.json({
         success: false,
         message: "Please fill all the details",
       });
     }
 
-    // Prepare update data
-    const updateData = {
+    const userData = await userModel.findByIdAndUpdate(userId, {
       name,
       phone,
-      address: address || "",
+      address,
       age,
       gender,
-    };
-
-    // If image file is provided, upload to cloudinary first
+    });
     if (imageFile) {
-      try {
-        //Upload image to cloudinary
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-          resource_type: "image",
-          folder: "prescripto/users", // Organize uploads in folders
-          transformation: [
-            { width: 400, height: 400, crop: "fill" }, // Resize and crop to square
-            { quality: "auto" } // Optimize quality
-          ]
-        });
+      //Upload image to cloudinary
+      const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+        resource_type: "image",
+      });
 
-        const imageURL = imageUpload.secure_url;
-        updateData.image = imageURL;
-
-        // Clean up local file after successful upload
-        const fs = await import('fs');
-        if (fs.existsSync(imageFile.path)) {
-          fs.unlinkSync(imageFile.path);
-        }
-      } catch (uploadError) {
-        console.error('Cloudinary upload error:', uploadError);
-        // Clean up local file even if upload fails
-        const fs = await import('fs');
-        if (imageFile && imageFile.path && fs.existsSync(imageFile.path)) {
-          fs.unlinkSync(imageFile.path);
-        }
-        return res.json({
-          success: false,
-          message: "Failed to upload image. Please try again.",
-        });
-      }
-    }
-
-    // Update user data with all fields including image if provided
-    const userData = await userModel.findByIdAndUpdate(userId, updateData, {
-      new: true, // Return the updated document
-    }).select("-password");
-
-    if (!userData) {
-      return res.json({
-        success: false,
-        message: "User not found",
+      const imageURL = imageUpload.secure_url;
+      await userModel.findByIdAndUpdate(userId, {
+        image: imageURL,
       });
     }
-
+    // console.log(userData)
     res.json({
       success: true,
       message: "Profile Updated",
       userData,
     });
   } catch (error) {
-    console.error('Profile update error:', error);
-    
-    // Clean up local file if it exists
-    if (req.file && req.file.path) {
-      const fs = await import('fs');
-      if (fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
-      }
-    }
-    
-    res.status(500).json({ 
-      success: false, 
-      message: "Internal Server Error: " + error.message 
-    });
+    res.json({ success: false, message: "Internal Server Error" });
   }
 };
 
