@@ -26,7 +26,7 @@ const AdminContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/admin/all-doctors",
         {},
-        { headers: { aToken } }
+        { headers: { atoken: aToken } }
       );
       if (data.success) {
         console.log(data.doctors);
@@ -43,7 +43,7 @@ const AdminContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/admin/change-availability",
         { docId },
-        { headers: { aToken } }
+        { headers: { atoken: aToken } }
       );
       if (data.success) {
         toast.success(data.message);
@@ -60,7 +60,7 @@ const AdminContextProvider = (props) => {
   const getAllAppointments = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
-        headers: { aToken },
+        headers: { atoken: aToken },
       });
       if (data.success) {
         console.log("apoint data");
@@ -78,7 +78,7 @@ const AdminContextProvider = (props) => {
   // Fetch dashboard data for the admin dashboard
   const getDashData = async () => {
     try {
-      const {data} = await axios.get(backendUrl+"/api/admin/dashboard",{headers:{aToken}});
+      const {data} = await axios.get(backendUrl+"/api/admin/dashboard",{headers:{atoken: aToken}});
       if(data.success){
         console.log("Dashboard Data: ", data);
         setDashData(data.dashData);
@@ -96,7 +96,7 @@ const AdminContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/admin/cancel-appointment",
         { appointmentId },
-        { headers: { aToken } }
+        { headers: { atoken: aToken } }
       );
       console.log(data);
       if (data.success) {

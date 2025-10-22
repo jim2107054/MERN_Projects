@@ -20,7 +20,7 @@ const DoctorContextProvider = (props) => {
     try {
       const { data } = await axios.get(
         backendUrl + "/api/doctors/appointments",
-        { headers: { dToken } }
+        { headers: { dtoken: dToken } }
       );
       if (data.success) {
         console.log(data.appointments);
@@ -38,7 +38,7 @@ const DoctorContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/doctors/complete-appointment",
         { appointmentId },
-        { headers: { dToken } }
+        { headers: { dtoken: dToken } }
       );
       if (data.success) {
         toast.success(data.message);
@@ -58,7 +58,7 @@ const DoctorContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/doctors/cancel-appointment",
         { appointmentId },
-        { headers: { dToken } }
+        { headers: { dtoken: dToken } }
       );
       if (data.success) {
         toast.success(data.message);
@@ -75,7 +75,7 @@ const DoctorContextProvider = (props) => {
   const getDashData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/doctors/dashboard", {
-        headers: { dToken },
+        headers: { dtoken: dToken },
       });
       if (data.success) {
         setDashData(data.dashData);
@@ -93,7 +93,7 @@ const DoctorContextProvider = (props) => {
   const getProfileData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/doctors/profile", {
-        headers: { dToken },
+        headers: { dtoken: dToken },
       });
       if (data.success) {
         setProfileData(data.profileData);
