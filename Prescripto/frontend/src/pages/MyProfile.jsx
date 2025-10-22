@@ -24,7 +24,12 @@ const MyProfile = () => {
         formData.append("image", image);
       }
 
-      const {data} = await axios.post(backendUrl+'/api/user/update-profile',formData,{headers:{token}})
+      const {data} = await axios.post(backendUrl+'/api/user/update-profile',formData,{
+        headers:{
+          token,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       
       if(data.success){
         toast.success(data.message)
@@ -37,7 +42,19 @@ const MyProfile = () => {
       }
     } catch (error) {
       console.log("Error updating profile:", error);
-      toast.error(error.response?.data?.message || error.message);
+      if (error.response) {
+        // Server responded with error status
+        console.log("Error response:", error.response.data);
+        toast.error(error.response.data?.message || `Server Error: ${error.response.status}`);
+      } else if (error.request) {
+        // Request made but no response received
+        console.log("No response received:", error.request);
+        toast.error("No response from server. Please check your connection.");
+      } else {
+        // Error in setting up request
+        console.log("Request setup error:", error.message);
+        toast.error("Error setting up request: " + error.message);
+      }
     }
   }
 
