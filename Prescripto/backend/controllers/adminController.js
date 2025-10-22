@@ -106,7 +106,7 @@ export const addDoctor = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding doctor:", error);
-    res.status(500).json({ success: false, message: "Internal server error: " + error.message });
+    res.status(500).json({ success: false, janina:"problem jani na", message: "Internal server error: " + error.message });
   }
 };
 
