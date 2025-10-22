@@ -40,6 +40,15 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
+        {/* Admin Button - always visible */}
+        <button
+          className="border border-primary text-primary hover:bg-primary hover:text-white px-4 py-1.5 rounded-md font-light transition-all duration-300"
+          onClick={() => window.location.href = 'https://doctor-admin-swart.vercel.app/'}
+          title="Admin Login"
+        >
+          Admin
+        </button>
+        
         {(token || localStorage.getItem('token')) && userData ? (
           <div className=" flex items-center gap-2 cursor-pointer group relative">
             {/* when the used is logged in, show the dropdown menu with profile icon and logout button */}
@@ -82,6 +91,15 @@ const Navbar = () => {
             <NavLink onClick={()=> setShowMenu(false)} to="/contact">
               <li className="Navbar-li">Contact</li>
             </NavLink>
+            <button
+              className="border border-white text-white hover:bg-white hover:text-gray-700 px-4 py-2 rounded-lg font-light transition-all duration-300 text-lg mt-3"
+              onClick={() => {
+                window.location.href = 'http://localhost:5174';
+                setShowMenu(false);
+              }}
+            >
+              Admin
+            </button>
           </ul>
         </div>
       </div>
