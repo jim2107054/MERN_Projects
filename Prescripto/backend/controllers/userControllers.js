@@ -129,13 +129,37 @@ export const updateProfile = async (req, res) => {
 
     // If image file is provided, upload to cloudinary first
     if (imageFile) {
-      //Upload image to cloudinary
-      const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-        resource_type: "image",
-      });
+      try {
+        //Upload image to cloudinary
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+          resource_type: "image",
+          folder: "prescripto/users", // Organize uploads in folders
+          transformation: [
+            { width: 400, height: 400, crop: "fill" }, // Resize and crop to square
+            { quality: "auto" } // Optimize quality
+          ]
+        });
 
-      const imageURL = imageUpload.secure_url;
-      updateData.image = imageURL;
+        const imageURL = imageUpload.secure_url;
+        updateData.image = imageURL;
+
+        // Clean up local file after successful upload
+        const fs = await import('fs');
+        if (fs.existsSync(imageFile.path)) {
+          fs.unlinkSync(imageFile.path);
+        }
+      } catch (uploadError) {
+        console.error('Cloudinary upload error:', uploadError);
+        // Clean up local file even if upload fails
+        const fs = await import('fs');
+        if (imageFile && imageFile.path && fs.existsSync(imageFile.path)) {
+          fs.unlinkSync(imageFile.path);
+        }
+        return res.json({
+          success: false,
+          message: "Failed to upload image. Please try again.",
+        });
+      }
     }
 
     // Update user data with all fields including image if provided
@@ -143,15 +167,33 @@ export const updateProfile = async (req, res) => {
       new: true, // Return the updated document
     }).select("-password");
 
-    // console.log(userData)
+    if (!userData) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     res.json({
       success: true,
       message: "Profile Updated",
       userData,
     });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Internal Server Error" });
+    console.error('Profile update error:', error);
+    
+    // Clean up local file if it exists
+    if (req.file && req.file.path) {
+      const fs = await import('fs');
+      if (fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error: " + error.message 
+    });
   }
 };
 
