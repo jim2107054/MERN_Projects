@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
 
 // Make sure DB connection happens before export
 await connectDB();
-
 uploadImageOnCloudinary();
 
 export default app;
