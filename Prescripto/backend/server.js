@@ -23,6 +23,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.ADMIN_URL,
   process.env.BACKEND_PRODUCTION_URL,
+  'https://doctor-appointments-olive.vercel.app'
 ].filter(Boolean); // Remove any undefined values
 
 console.log('Allowed CORS origins:', allowedOrigins);
